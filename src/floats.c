@@ -6,21 +6,12 @@
 void init(float ***f, size_t row, size_t col)
 {
     int i;
-    int j;
 
     *f = (float **) malloc(sizeof(float *) * row);
 
     for (i = 0; i != row; i++)
     {
-        printf("%d\n", i);
-        *(f)[i] = (float *) malloc(col * sizeof(float));
-    }
-    for (i = 0; i != row; i++)
-    {
-        for (j = 0; j != col; j++) {
-        printf("%d\n", i);
-        f[i][j] = 0;
-        }
+        *(f)[i] = (float *) calloc(col, sizeof(float));
     }
 }
 
@@ -36,7 +27,7 @@ float **init2(size_t row, size_t col)
 
     for (i = 0; i != row; i++)
     {
-        (f)[i] = (float *) malloc(sizeof(float) * col);
+        f[i] = (float *) calloc(col, sizeof(float));
     }
 
     return f;

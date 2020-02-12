@@ -29,7 +29,7 @@ int main()
 
     f2 = init2(row, col);
     puts("input_floats_cli");
-    input_floats_cli(f2, row, col);
+    /* input_floats_cli(f2, row, col); */
     puts("print_floats_cli");
     print_floats_cli(f2, row, col);
     puts("free_floats");
