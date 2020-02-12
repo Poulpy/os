@@ -12,9 +12,9 @@ int main()
 
     m = init_matrix2(rows, cols);
     puts("input_matrix_cli");
-    /*input_matrix_cli(&m);
+    input_matrix_cli(&m);
     puts("print_matrix_cli");
-    //print_matrix_cli(&m);*/
+    print_matrix_cli(&m);
     puts("free_matrix");
     free_matrix(&m);
 
