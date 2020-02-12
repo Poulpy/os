@@ -6,6 +6,7 @@
 void init(float ***f, size_t row, size_t col)
 {
     int i;
+    int j;
 
     *f = (float **) malloc(sizeof(float *) * row);
 
@@ -14,7 +15,13 @@ void init(float ***f, size_t row, size_t col)
         printf("%d\n", i);
         *(f)[i] = (float *) malloc(col * sizeof(float));
     }
-
+    for (i = 0; i != row; i++)
+    {
+        for (j = 0; j != col; j++) {
+        printf("%d\n", i);
+        f[i][j] = 0;
+        }
+    }
 }
 
 /*
