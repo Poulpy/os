@@ -12,8 +12,9 @@ void init(float ***f, size_t row, size_t col)
     for (i = 0; i != row; i++)
     {
         printf("%d\n", i);
-        *(f)[i] = (float *) calloc(col, sizeof(float));
+        *(f)[i] = (float *) malloc(col * sizeof(float));
     }
+
 }
 
 /*
