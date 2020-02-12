@@ -10,7 +10,8 @@ int main()
     rows = 2;
     cols = 2;
 
-    m = init_matrix2(rows, cols);
+    /*m = init_matrix2(rows, cols);*/
+    init_matrix(&m, rows, cols);
     puts("input_matrix_cli");
     input_matrix_cli(&m);
     puts("print_matrix_cli");

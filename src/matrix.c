@@ -16,6 +16,9 @@ void init_matrix(t_matrix *m, size_t rows, size_t cols)
     m->cols = cols;
 }
 
+/*
+ * Returns a matrix initialized. Its coefficients are set to 0
+ */
 t_matrix init_matrix2(size_t rows, size_t cols)
 {
     t_matrix m;
@@ -30,6 +33,7 @@ t_matrix init_matrix2(size_t rows, size_t cols)
 
     return m;
 }
+
 /*
  * Free a matrix
  */
