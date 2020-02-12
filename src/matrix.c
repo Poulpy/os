@@ -16,6 +16,20 @@ void init_matrix(t_matrix *m, size_t rows, size_t cols)
     m->cols = cols;
 }
 
+t_matrix init_matrix2(size_t rows, size_t cols)
+{
+    t_matrix m;
+    float **f;
+
+    f = NULL;
+    f = init2(rows, cols);
+
+    m.coeffs = f;
+    m.rows = rows;
+    m.cols = cols;
+
+    return m;
+}
 /*
  * Free a matrix
  */
