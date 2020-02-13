@@ -2,6 +2,8 @@
 
 /*
  * Reads a file and returns a string containing all the content of the file
+ * It can return NULL if the file doesn't exist
+ * Don't forget to free the char*
  */
 char *read(char *filename)
 {
