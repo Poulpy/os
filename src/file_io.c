@@ -14,12 +14,19 @@ char *read(char *filename)
 
     if (file != NULL)
     {
-        content = (char *) malloc(sizeof(char));
+        /*
+        if ((letter = fgetc(file)) != EOF)
+        {
+            char_to_concat[0] = letter;
+            strcat(content, char_to_concat);
+        }
+        */
+            content = (char *) calloc(2, sizeof(char));
 
         while ((letter = fgetc(file)) != EOF)
         {
             char_to_concat[0] = letter;
-            content = (char *) realloc(content, sizeof(char) * (strlen(content) + 1));
+            content = (char *) realloc(content, sizeof(char) * (strlen(content) + 2));
             strcat(content, char_to_concat);
         }
 
