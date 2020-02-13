@@ -1,11 +1,14 @@
 #include "../include/file_io.h"
 
+/*
+ * Reads a file and returns a string containing all the content of the file
+ */
 char *read(char *filename)
 {
     FILE *file;
     char *content;
     char letter;
-    char char_to_concat[2];
+    char char_to_concat[2] = "";
 
     file = NULL;
     content = NULL;
@@ -14,14 +17,7 @@ char *read(char *filename)
 
     if (file != NULL)
     {
-        /*
-        if ((letter = fgetc(file)) != EOF)
-        {
-            char_to_concat[0] = letter;
-            strcat(content, char_to_concat);
-        }
-        */
-            content = (char *) calloc(2, sizeof(char));
+        content = (char *) calloc(2, sizeof(char));
 
         while ((letter = fgetc(file)) != EOF)
         {

@@ -9,7 +9,10 @@ int main()
     puts("read");
     content = read("./test/test_floats.c");
 
-    printf("%s\n", content);
+    if (NULL != content)
+    {
+        printf("%s\n", content);
+    }
 
     free(content);
 
