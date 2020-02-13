@@ -6,6 +6,7 @@
 #include<string.h>
 
 char *read(char *filename);
+int write(char *filename, char *content);
 
 #endif
 

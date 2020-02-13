@@ -16,6 +16,8 @@ int main()
 
     free(content);
 
+    write("./test/OwO.txt", "OwO");
+
     return 0;
 }
 

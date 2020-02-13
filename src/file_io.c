@@ -17,7 +17,11 @@ char *read(char *filename)
 
     file = fopen(filename, "r");
 
-    if (file != NULL)
+    if (file == NULL)
+    {
+        puts("No file found");
+    }
+    else
     {
         content = (char *) calloc(2, sizeof(char));
 
@@ -30,10 +34,29 @@ char *read(char *filename)
 
         fclose(file);
     }
-    else
-    {
-        puts("No file found");
-    }
 
     return content;
 }
+
+int write(char *filename, char *content)
+{
+    FILE *file;
+
+    file = NULL;
+
+    file = fopen(filename, "w");
+
+    if (NULL == file)
+    {
+        puts("Could not open file");
+
+        return 0;
+    }
+
+    fprintf(file, "%s", content);
+
+    fclose(file);
+
+    return 1;
+}
+
