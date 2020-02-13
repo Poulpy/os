@@ -16,7 +16,11 @@ int main()
 
     free(content);
 
+    puts("write");
     write("./test/OwO.txt", "OwO");
+
+    puts("copy");
+    copy("./test/test_floats.c", "./test/OmO.txt");
 
     return 0;
 }

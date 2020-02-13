@@ -38,6 +38,10 @@ char *read(char *filename)
     return content;
 }
 
+/*
+ * Write a string to a file. The file is created, or overwritten. Returns 0 if
+ * opening the file failed, else 1.
+ */
 int write(char *filename, char *content)
 {
     FILE *file;
@@ -58,5 +62,31 @@ int write(char *filename, char *content)
     fclose(file);
 
     return 1;
+}
+
+/*
+ * Copy the content of a file to another file. The destination file is
+ * created if it doesn't exist. If it is successful, it returns 1, else 0.
+ */
+int copy(char *file_to_copy, char *file_dest)
+{
+    int success;
+    char *content;
+
+    content = NULL;
+
+    content = read(file_to_copy);
+
+    if (NULL == content)
+    {
+        puts("Could not read file");
+        return 0;
+    }
+
+    success = write(file_dest, content);
+
+    free(content);
+
+    return success;
 }
 
