@@ -3,7 +3,7 @@
 /*
  * Initialize a 2D array of floats
  */
-void init(float ***f, size_t row, size_t col)
+void init_floats(float ***f, size_t row, size_t col)
 {
     int i;
 
@@ -11,7 +11,7 @@ void init(float ***f, size_t row, size_t col)
 
     for (i = 0; i != row; i++)
     {
-        *(f)[i] = (float *) calloc(col, sizeof(float));
+        *(*f + i) = (float *) calloc(col, sizeof(float));
     }
 }
 
