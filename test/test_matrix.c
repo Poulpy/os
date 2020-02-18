@@ -1,7 +1,19 @@
 #include "../include/matrix.h"
 
+void test_atomatrix()
+{
+    t_matrix m;
+
+    m = atomatrix("test/mat.txt");
+    print_matrix_cli(&m);
+
+    free_matrix(&m);
+}
+
 int main()
 {
+    test_atomatrix();
+    /*
     t_matrix m;
     t_matrix m2;
     t_matrix m3;
@@ -32,6 +44,7 @@ int main()
     free_matrix(&m);
     free_matrix(&m2);
     free_matrix(&m3);
+    */
 
     return 0;
 }

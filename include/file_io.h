@@ -6,8 +6,8 @@
 #include<string.h>
 
 char *read(char *filename);
-int write(char *filename, char *content);
 int copy(char *file_to_copy, char *file_dest);
+int write(char *filename, char *content);
 
 #endif
 

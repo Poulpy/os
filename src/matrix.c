@@ -1,4 +1,3 @@
-#include "../include/floats.h"
 #include "../include/matrix.h"
 
 /*
@@ -87,5 +86,89 @@ t_matrix product(t_matrix *m1, t_matrix *m2)
     }
 
     return m3;
+}
+
+/*
+ * Replaces all characters rep by character cop in a string str
+ */
+void replace(char *str, char rep, char cop)
+{
+    while (*str != '\0')
+    {
+        if (*str == rep)
+            *str = cop;
+        str++;
+    }
+}
+
+/*
+ * Returns the index of the first occurence of a character
+ * in a string
+ */
+int get_index(char *str, char chr)
+{
+    char *c;
+
+    c = strchr(str, chr);
+    return (int) (c - str);
+}
+
+/*
+ * Parses a file and returns a matrix according to the following format
+ * rows cols
+ * coeff1 coeff2
+ * coeff3 coeff4
+ */
+t_matrix atomatrix(char *filename)
+{
+    char *contents;
+    char *newline;
+    char *space;
+    int cols;
+    int current;
+    int i;
+    int j;
+    int rows;
+    t_matrix m;
+
+    contents = NULL;
+    newline = NULL;
+    space = NULL;
+
+    contents = read(filename);
+
+    /*
+     * Gettin the number of rows and the number of cols
+     * replacing the \n by \0 ~= slicing
+     */
+    newline = strchr(contents, '\n');
+    *newline = '\0';
+    sscanf(contents, "%d %d", &rows, &cols);
+
+    m = init_matrix2(rows, cols);
+
+    *newline = '\n';
+    current = get_index(contents, '\n') + 1;
+    replace(contents, '\n', ' ');
+
+    for (i = 0; i != rows; i++)
+    {
+        for (j = 0; j != cols; j++)
+        {
+            /* slicing */
+            space = strchr(contents + current, ' ');
+            *space = '\0';
+
+            sscanf(contents + current, "%f", &(m.coeffs[i][j]));
+
+            *space = ' ';
+            /* moving to the next word, after a space */
+            current += get_index((contents + current), ' ') + 1;
+        }
+    }
+
+    free(contents);
+
+    return m;
 }
 
