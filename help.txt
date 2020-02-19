@@ -1,0 +1,4 @@
+    Utilisation : a.out [option] fichier1 fichier2
+    Options :
+        --help Afficher l'aide
+        -s <s> Fichier de sortie pour le produit matriciel, par défaut <out.txt>
