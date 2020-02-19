@@ -3,10 +3,21 @@
 void test_atomatrix()
 {
     t_matrix m;
+    char *contents;
+    char *contents2;
 
-    m = atomatrix("test/mat.txt");
+    contents = NULL;
+    contents2 = NULL;
+
+    contents = read("test/mat.txt");
+
+    m = atomatrix(contents);
     print_matrix_cli(&m);
+    contents2 = matrixtoa(&m);
+    printf("%s\n", contents2);
 
+    free(contents);
+    free(contents2);
     free_matrix(&m);
 }
 

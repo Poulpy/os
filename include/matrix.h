@@ -12,7 +12,8 @@ typedef struct t_matrix {
     size_t cols;
 } t_matrix;
 
-t_matrix atomatrix(char *filename);
+t_matrix atomatrix(char *contents);
+char *matrixtoa(t_matrix *m);
 t_matrix init_matrix2(size_t rows, size_t cols);
 t_matrix product(t_matrix *m1, t_matrix *m2);
 void free_matrix(t_matrix *m);

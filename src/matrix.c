@@ -114,14 +114,13 @@ int get_index(char *str, char chr)
 }
 
 /*
- * Parses a file and returns a matrix according to the following format
+ * Returns a matrix according to the following format
  * rows cols
  * coeff1 coeff2
  * coeff3 coeff4
  */
-t_matrix atomatrix(char *filename)
+t_matrix atomatrix(char *contents)
 {
-    char *contents;
     char *newline;
     char *space;
     int cols;
@@ -131,11 +130,8 @@ t_matrix atomatrix(char *filename)
     int rows;
     t_matrix m;
 
-    contents = NULL;
     newline = NULL;
     space = NULL;
-
-    contents = read(filename);
 
     /*
      * Gettin the number of rows and the number of cols
@@ -170,5 +166,37 @@ t_matrix atomatrix(char *filename)
     free(contents);
 
     return m;
+}
+
+char *matrixtoa(t_matrix *m)
+{
+    int i;
+    int j;
+    char *buf;
+    char f[4] = "";
+
+    buf = (char *) malloc(sizeof(char) * 10);
+    sprintf(buf, "%lu %lu", (unsigned long) m->rows, (unsigned long) m->cols);
+    buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + 1));
+    strcat(buf, "\n");
+
+    for (i = 0; i != m->rows; i++)
+    {
+        for (j = 0; j != m->cols; j++)
+        {
+            sprintf(f, "%.2f", m->coeffs[i][j]);
+            buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + strlen(f)));
+            strcat(buf, f);
+            if (j != m->cols - 1)
+            {
+                buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + strlen(f) + 1));
+                strcat(buf, " ");
+            }
+        }
+        buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + 1));
+        strcat(buf, "\n");
+    }
+
+    return buf;
 }
 
