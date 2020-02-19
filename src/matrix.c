@@ -72,6 +72,11 @@ t_matrix product(t_matrix *m1, t_matrix *m2)
 
     init_matrix(&m3, m1->rows, m2->cols);
 
+    if (m1->rows != m2->cols)
+    {
+        perror("Number of rows of first matrix must be equal to number of columns of second matrix");
+    }
+
     for (i = 0; i != m1->rows; i++)
     {
         for (j = 0, sum = 0; j != m2->cols; j++)

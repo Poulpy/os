@@ -19,4 +19,3 @@ int write(char *filename, char *content);
 
 #endif
 
-

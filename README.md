@@ -11,3 +11,4 @@ gcc -Wall -pedantic -ansi -O2 -g src/floats.c src/file_io.c src/matrix.c test/te
 gcc -Wall -pedantic -ansi -O2 -g src/file_io.c test/test_file_io.c
 ```
 
+gcc -Wall -pedantic -ansi -O2 -g src/floats.c src/file_io.c src/matrix.c src/main.c
