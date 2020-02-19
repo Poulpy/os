@@ -15,6 +15,7 @@ void test_atomatrix()
     print_matrix_cli(&m);
     contents2 = matrixtoa(&m);
     printf("%s\n", contents2);
+    write("test/out.txt", contents2);
 
     free(contents);
     free(contents2);
