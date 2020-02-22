@@ -63,6 +63,9 @@ void input_floats_cli(float **f, size_t row, size_t col)
     }
 }
 
+/*
+ * Let the user input values for a 1D array of floats
+ */
 void input_row_cli(float *f, size_t cols)
 {
     int j;
@@ -76,6 +79,8 @@ void input_row_cli(float *f, size_t cols)
 
 /*
  * Prints a 2D array of floats in the terminal
+ * [[2.30, 3.44],
+ * [4.00, 2.01]]
  */
 void print_floats_cli(float **f, size_t row, size_t col)
 {

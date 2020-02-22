@@ -24,8 +24,6 @@ void test_atomatrix()
 
 int main()
 {
-    test_atomatrix();
-    /*
     t_matrix m;
     t_matrix m2;
     t_matrix m3;
@@ -56,7 +54,8 @@ int main()
     free_matrix(&m);
     free_matrix(&m2);
     free_matrix(&m3);
-    */
+
+    test_atomatrix();
 
     return 0;
 }

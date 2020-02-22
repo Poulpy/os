@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
         print_matrix_cli(&m3);
         write(output_file, m3_content);
 
+        free(mat1_file);
+        free(mat2_file);
         free(output_file);
         free(m1_content);
         free(m2_content);
