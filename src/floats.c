@@ -18,7 +18,7 @@ void init_floats(float ***f, size_t row, size_t col)
 /*
  * Returns a 2D array of floats
  */
-float **init2(size_t row, size_t col)
+float **init_floats2(size_t row, size_t col)
 {
     float **f;
     int i;

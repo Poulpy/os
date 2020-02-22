@@ -8,7 +8,7 @@ void init_matrix(t_matrix *m, size_t rows, size_t cols)
     float **f;
 
     f = NULL;
-    f = init2(rows, cols);
+    init_floats(&f, rows, cols);
 
     m->coeffs = f;
     m->rows = rows;
@@ -24,7 +24,7 @@ t_matrix init_matrix2(size_t rows, size_t cols)
     float **f;
 
     f = NULL;
-    f = init2(rows, cols);
+    f = init_floats2(rows, cols);
 
     m.coeffs = f;
     m.rows = rows;

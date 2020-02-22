@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         m2_content = read(mat2_file);
         m1 = atomatrix(m1_content);
         m2 = atomatrix(m2_content);
-        init_matrix(&m3, m1.rows, m1.cols);
+        /* init_matrix(&m3, m1.rows, m1.cols); */
         m3 = product(&m1, &m2);
         m3_content = matrixtoa(&m3);
 

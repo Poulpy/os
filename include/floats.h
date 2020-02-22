@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-float **init2(size_t row, size_t col);
+float **init_floats2(size_t row, size_t col);
 void free_floats(float **f, size_t row);
 void init_floats(float ***f, size_t row, size_t col);
 void input_floats_cli(float **f, size_t row, size_t col);
