@@ -6,6 +6,20 @@
 #include "../include/floats.h"
 #include "../include/file_io.h"
 
+#define RANDOM_SIZE 10
+#define COEFF_SIZE 10
+
+#ifndef LINE_SEPARATOR
+ #if defined(__WIN32) || defined(__WIN32__)
+  #define LINE_SEPARATOR "\r\n"
+  #define LINE_SEPARATOR_SIZE 2
+ #else
+  #define LINE_SEPARATOR "\n"
+  #define LINE_SEPARATOR_SIZE 1
+ #endif
+#endif
+
+
 typedef struct t_matrix {
     float **coeffs;
     size_t rows;
