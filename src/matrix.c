@@ -61,6 +61,7 @@ void print_matrix_cli(t_matrix *m)
 /*
  * Returns the product of 2 matrixes. The number of rows of the first matrix
  * must equal to the number of columns of the second
+ * Don't forget to free
  */
 t_matrix product(t_matrix *m1, t_matrix *m2)
 {
@@ -186,7 +187,8 @@ char *matrixtoa(t_matrix *m)
 
     buf = (char *) malloc(sizeof(char) * 10);
     sprintf(buf, "%lu %lu", (unsigned long) m->rows, (unsigned long) m->cols);
-    buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + 2));
+    /* strlen exludes the \0, so you add 1; and add 1 also for the newline to concatenate */
+    buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + 1 + 1));
     strcat(buf, "\n");
 
     for (i = 0; i != m->rows; i++)
@@ -203,7 +205,7 @@ char *matrixtoa(t_matrix *m)
                 strcat(buf, " ");
             }
         }
-        buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + 2));
+        buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + 1 + 1));
         strcat(buf, "\n");
     }
 

@@ -28,7 +28,7 @@ char *read(char *filename)
         while ((letter = fgetc(file)) != EOF)
         {
             char_to_concat[0] = letter;
-            content = (char *) realloc(content, sizeof(char) * (strlen(content) + 2));
+            content = (char *) realloc(content, sizeof(char) * (strlen(content) + 1 + 1));
             strcat(content, char_to_concat);
         }
 
