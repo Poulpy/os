@@ -25,6 +25,8 @@ float **init_floats2(size_t row, size_t col)
 
     f = (float **) malloc(sizeof(float *) * row);
 
+    if (NULL == f) return NULL;
+
     for (i = 0; i != row; i++)
     {
         f[i] = (float *) calloc(col, sizeof(float));
@@ -53,34 +55,42 @@ void free_floats(float **f, size_t row)
  * Lets the user input the values for a 2D array of floats,
  * in the terminal
  */
-void input_floats_cli(float **f, size_t row, size_t col)
+int input_floats_cli(float **f, size_t row, size_t col)
 {
     int i;
+
+    if (NULL == f) return 0;
 
     for (i = 0; i != row; i++)
     {
         input_row_cli(f[i], col);
     }
+
+    return 1;
 }
 
 /*
  * Let the user input values for a 1D array of floats
  */
-void input_row_cli(float *f, size_t cols)
+int input_row_cli(float *f, size_t cols)
 {
     int j;
+
+    if (NULL == f) return 0;
 
     for (j = 0; j != cols; j++)
     {
         printf("[%d] : ", j);
         scanf(" %f", &f[j]);
     }
+
+    return 1;
 }
 
 /*
  * Prints a 2D array of floats in the terminal
  * [[2.30, 3.44],
- * [4.00, 2.01]]
+ *  [4.00, 2.01]]
  */
 void print_floats_cli(float **f, size_t row, size_t col)
 {
@@ -99,7 +109,7 @@ void print_floats_cli(float **f, size_t row, size_t col)
         }
 
         printf("]");
-        if (i + 1 != row) printf(", \n");
+        if (i + 1 != row) printf(", \n ");
     }
 
     printf("]\n");

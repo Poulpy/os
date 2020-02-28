@@ -17,26 +17,50 @@ char *read(char *filename)
 
     file = fopen(filename, "r");
 
-    if (file == NULL)
-    {
-        puts("No file found");
-    }
-    else
-    {
-        content = (char *) calloc(2, sizeof(char));
+    if (file == NULL) return NULL;
 
-        while ((letter = fgetc(file)) != EOF)
-        {
-            char_to_concat[0] = letter;
-            content = (char *) realloc(content, sizeof(char) * (strlen(content) + 1 + 1));
-            strcat(content, char_to_concat);
-        }
+    content = (char *) calloc(2, sizeof(char));
 
-        fclose(file);
+    while ((letter = fgetc(file)) != EOF)
+    {
+        char_to_concat[0] = letter;
+        /* We're adding one letter and one terminating null byte, so that makes 2 more to allocate */
+        content = (char *) realloc(content, sizeof(char) * (strlen(content) + 1 + 1));
+        strcat(content, char_to_concat);
     }
+
+    fclose(file);
 
     return content;
 }
+
+/*
+char *read2(char *filename)
+{
+    FILE *file;
+    char *content;
+    int size;
+
+    file = NULL;
+    content = NULL;
+    size = 0;
+
+    file = fopen(filename, "r");
+
+    if (file == NULL) return NULL
+
+    do {
+        size++;
+    } while (fgetc(file) != EOF)
+
+    content = (char *) malloc(sizeof(char) * size);
+    fprintf(content, "%s", );
+
+    fclose(file);
+
+    return content;
+}
+*/
 
 /*
  * Write a string to a file. The file is created, or overwritten. Returns 0 if
@@ -50,12 +74,7 @@ int write(char *filename, char *content)
 
     file = fopen(filename, "w");
 
-    if (NULL == file)
-    {
-        puts("Could not open file");
-
-        return 0;
-    }
+    if (NULL == file) return 0;
 
     fprintf(file, "%s", content);
 
@@ -77,11 +96,7 @@ int copy(char *file_to_copy, char *file_dest)
 
     content = read(file_to_copy);
 
-    if (NULL == content)
-    {
-        puts("Could not read file");
-        return 0;
-    }
+    if (NULL == content) return 0;
 
     success = write(file_dest, content);
 
