@@ -10,15 +10,14 @@
 #define COEFF_SIZE 10
 
 #ifndef LINE_SEPARATOR
- #if defined(__WIN32) || defined(__WIN32__)
-  #define LINE_SEPARATOR "\r\n"
-  #define LINE_SEPARATOR_SIZE 2
- #else
-  #define LINE_SEPARATOR "\n"
-  #define LINE_SEPARATOR_SIZE 1
- #endif
+# if defined(__WIN32) || defined(__WIN32__)
+#  define LINE_SEPARATOR "\r\n"
+#  define LINE_SEPARATOR_SIZE 2
+# else
+#  define LINE_SEPARATOR "\n"
+#  define LINE_SEPARATOR_SIZE 1
+# endif
 #endif
-
 
 typedef struct t_matrix {
     float **coeffs;

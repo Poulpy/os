@@ -99,7 +99,9 @@ void replace(char *str, char rep, char cop)
     while (*str != '\0')
     {
         if (*str == rep)
+        {
             *str = cop;
+        }
         str++;
     }
 }
@@ -151,8 +153,8 @@ t_matrix atomatrix(char *contents)
 
     /*
      * Replacing all line endings by blanks, for simplicity
-     * TODO for windows, replace(string, string, char) (because \r\n is TWO char (so string) not one
-     * replace(contents, LINE_SEPARATOR, ' ');
+     * TODO for windows, replace(string, string, char) (because \r\n is TWO
+     * char (so string) not one : replace(contents, LINE_SEPARATOR, ' ');
      */
     replace(contents, '\n', ' ');
 
@@ -205,10 +207,13 @@ char *matrixtoa(t_matrix *m)
     {
         for (j = 0; j != m->cols; j++)
         {
+            /* Converting the coefficient to a string */
             sprintf(coefficient_value, "%.2f", m->coeffs[i][j]);
+
             buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + strlen(coefficient_value) + 1));
             strcat(buf, coefficient_value);
 
+            /* If this is not the last coefficient, we add a space */
             if (j != m->cols - 1)
             {
                 buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + strlen(coefficient_value) + 1));
@@ -216,6 +221,7 @@ char *matrixtoa(t_matrix *m)
             }
         }
 
+        /* We add a newline because it is the end of a row */
         buf = (char *) realloc(buf, sizeof(char) * (strlen(buf) + LINE_SEPARATOR_SIZE + 1));
         strcat(buf, LINE_SEPARATOR);
     }

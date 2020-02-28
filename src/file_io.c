@@ -19,13 +19,21 @@ char *read(char *filename)
 
     if (file == NULL) return NULL;
 
+    /*
+     * We initialize with a random size; can't put that in the loop, since the
+     * allocation is based on the length of the content
+     */
     content = (char *) calloc(2, sizeof(char));
 
     while ((letter = fgetc(file)) != EOF)
     {
         char_to_concat[0] = letter;
-        /* We're adding one letter and one terminating null byte, so that makes 2 more to allocate */
-        content = (char *) realloc(content, sizeof(char) * (strlen(content) + 1 + 1));
+
+        /*
+         * We're adding one letter and one terminating null byte, so that makes
+         * 2 more to allocate
+         */
+        content = (char *) realloc(content, sizeof(char) * (strlen(content) + 2));
         strcat(content, char_to_concat);
     }
 
@@ -33,34 +41,6 @@ char *read(char *filename)
 
     return content;
 }
-
-/*
-char *read2(char *filename)
-{
-    FILE *file;
-    char *content;
-    int size;
-
-    file = NULL;
-    content = NULL;
-    size = 0;
-
-    file = fopen(filename, "r");
-
-    if (file == NULL) return NULL
-
-    do {
-        size++;
-    } while (fgetc(file) != EOF)
-
-    content = (char *) malloc(sizeof(char) * size);
-    fprintf(content, "%s", );
-
-    fclose(file);
-
-    return content;
-}
-*/
 
 /*
  * Write a string to a file. The file is created, or overwritten. Returns 0 if
