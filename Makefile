@@ -8,6 +8,8 @@ OBJ=build/main.o build/floats.o build/matrix.o build/file_io.o
 
 all: $(TARGET)
 
+test: $(TARGET)
+
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $(TARGET)
 
