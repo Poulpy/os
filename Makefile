@@ -6,13 +6,15 @@ TARGET=bin/main
 INC=-Iinclude
 OBJ=build/main.o build/floats.o build/matrix.o build/file_io.o
 
-all: $(TARGET)
+all: build $(TARGET)
+
+build:
+	mkdir build
+	mkdir bin
 
 test: $(TARGET)
 
 $(TARGET): $(OBJ)
-	mkdir build
-	mkdir bin
 	$(CC) $(CFLAGS) $^ -o $(TARGET)
 
 build/main.o: src/main.c $(BUILDDIR)/file_io.o $(BUILDDIR)/floats.o $(BUILDDIR)/matrix.o
