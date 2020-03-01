@@ -11,6 +11,8 @@ all: $(TARGET)
 test: $(TARGET)
 
 $(TARGET): $(OBJ)
+	mkdir build
+	mkdir bin
 	$(CC) $(CFLAGS) $^ -o $(TARGET)
 
 build/main.o: src/main.c $(BUILDDIR)/file_io.o $(BUILDDIR)/floats.o $(BUILDDIR)/matrix.o
