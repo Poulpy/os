@@ -18,7 +18,7 @@ gcc -Wall -pedantic -ansi -O2 -g src/file_io.c test/test_file_io.c
 ### Compile and execute main
 
 ```
-gcc -Wall -pedantic -ansi -O2 -g src/floats.c src/file_io.c src/matrix.c src/main.c
-./a.out test/mat.txt test/mat2.txt
+make
+./bin/main test/mat.txt test/mat2.txt
 ```
 

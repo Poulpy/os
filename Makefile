@@ -30,5 +30,5 @@ build/file_io.o: $(SRCDIR)/file_io.c $(BUILDDIR)/floats.o $(BUILDDIR)/matrix.o
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	rm -rf $(BUILDDIR)/*.o
-	rm -rf $(TARGET)
+	rm -i $(BUILDDIR)/*.o
+	rm -i $(TARGET)
