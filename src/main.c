@@ -27,11 +27,14 @@ int main(int argc, char *argv[])
         m2_content = read(mat2_file);
         m1 = atomatrix(m1_content);
         m2 = atomatrix(m2_content);
-        /* init_matrix(&m3, m1.rows, m1.cols); */
+        print_matrix_cli(&m1);
+        puts("X");
+        print_matrix_cli(&m2);
+        puts("=");
         m3 = product(&m1, &m2);
+        print_matrix_cli(&m3);
         m3_content = matrixtoa(&m3);
 
-        print_matrix_cli(&m3);
         write(output_file, m3_content);
 
         free(mat1_file);
