@@ -17,6 +17,6 @@ make test
 
 ```
 make
-./bin/main test/mat.txt test/mat2.txt
+./main test/mat.txt test/mat2.txt
 ```
 
