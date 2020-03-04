@@ -1,4 +1,4 @@
-#include "../include/floats.h"
+#include "floats.h"
 
 /*
  * Initialize a 2D array of floats

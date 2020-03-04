@@ -3,8 +3,8 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include "../include/floats.h"
-#include "../include/file_io.h"
+#include "floats.h"
+#include "file_io.h"
 
 #define RANDOM_SIZE 10
 #define COEFF_SIZE 10
