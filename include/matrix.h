@@ -3,8 +3,8 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include "../include/floats.h"
-#include "../include/file_io.h"
+#include "floats.h"
+#include "file_io.h"
 
 #define RANDOM_SIZE 10
 #define COEFF_SIZE 10
@@ -25,8 +25,8 @@ typedef struct t_matrix {
     size_t cols;
 } t_matrix;
 
-t_matrix atomatrix(char *contents);
 char *matrixtoa(t_matrix *m);
+t_matrix atomatrix(char *contents);
 t_matrix init_matrix2(size_t rows, size_t cols);
 t_matrix product(t_matrix *m1, t_matrix *m2);
 void free_matrix(t_matrix *m);

@@ -1,4 +1,4 @@
-#include "../include/matrix.h"
+#include "matrix.h"
 
 /*
  * Initialize a matrix
@@ -65,9 +65,7 @@ void print_matrix_cli(t_matrix *m)
  */
 t_matrix product(t_matrix *m1, t_matrix *m2)
 {
-    int i;
-    int j;
-    int z;
+    int i, j, z;
     int sum;
     t_matrix m3;
 
@@ -123,32 +121,22 @@ int get_index(char *str, char chr)
  * rows cols
  * coeff1 coeff2
  * coeff3 coeff4
+ * TODO Line endings for Unix and Windows
  */
 t_matrix atomatrix(char *contents)
 {
-    char *newline;
-    char *space;
-    int cols;
+    int cols, rows;
     int current;
-    int i;
-    int j;
-    int rows;
+    int i, j;
     t_matrix m;
-
-    newline = NULL;
-    space = NULL;
 
     /*
      * Getting the number of rows and the number of cols
-     * replacing the \n by \0 is equivalent to slicing
      */
-    newline = strchr(contents, '\n');
-    *newline = '\0';
     sscanf(contents, "%d %d", &rows, &cols);
 
     m = init_matrix2(rows, cols);
 
-    *newline = '\n';
     current = get_index(contents, '\n') + LINE_SEPARATOR_SIZE;
 
     /*
@@ -162,14 +150,9 @@ t_matrix atomatrix(char *contents)
     {
         for (j = 0; j != cols; j++)
         {
-            /* slicing by adding a terminating null byte */
-            space = strchr(contents + current, ' ');
-            *space = '\0';
-
             /* scanning the coefficient */
             sscanf(contents + current, "%f", &(m.coeffs[i][j]));
 
-            *space = ' ';
             /* moving to the next word, right after a space */
             current += get_index((contents + current), ' ') + 1;
         }
@@ -181,11 +164,11 @@ t_matrix atomatrix(char *contents)
 /*
  * Returns a char* representing a matrix
  * see atomatrix
+ * Line endings work for Unix and Windows
  */
 char *matrixtoa(t_matrix *m)
 {
-    int i;
-    int j;
+    int i, j;
     char *buf;
     char coefficient_value[COEFF_SIZE] = "";
 

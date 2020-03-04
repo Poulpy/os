@@ -1,4 +1,4 @@
-#include "../include/file_io.h"
+#include "file_io.h"
 
 /*
  * Reads a file and returns a string containing all the content of the file

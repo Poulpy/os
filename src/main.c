@@ -1,18 +1,12 @@
-#include "../include/matrix.h"
-#include "../include/main.h"
+#include "matrix.h"
+#include "main.h"
 
 int main(int argc, char *argv[])
 {
-    char *m1_content;
-    char *m2_content;
-    char *m3_content;
-    char *mat1_file;
-    char *mat2_file;
-    char *output_file;
+    char *m1_content, *m2_content, *m3_content;
+    char *mat1_file, *mat2_file, *output_file;
     int good_input;
-    t_matrix m1;
-    t_matrix m2;
-    t_matrix m3;
+    t_matrix m1, m2, m3;
 
     output_file = NULL;
     mat1_file = NULL;
@@ -33,11 +27,14 @@ int main(int argc, char *argv[])
         m2_content = read(mat2_file);
         m1 = atomatrix(m1_content);
         m2 = atomatrix(m2_content);
-        /* init_matrix(&m3, m1.rows, m1.cols); */
+        print_matrix_cli(&m1);
+        puts("X");
+        print_matrix_cli(&m2);
+        puts("=");
         m3 = product(&m1, &m2);
+        print_matrix_cli(&m3);
         m3_content = matrixtoa(&m3);
 
-        print_matrix_cli(&m3);
         write(output_file, m3_content);
 
         free(mat1_file);
@@ -57,9 +54,11 @@ int main(int argc, char *argv[])
 int parse_args(int argc, char *argv[], char **output_file, char **mat1_file,
                char **mat2_file)
 {
-    int good_input;
+    int good_input, no_out_file;
+    int order[3];
 
     good_input = 0;
+    no_out_file = 0;
 
     if (2 == argc)
     {
@@ -72,22 +71,16 @@ int parse_args(int argc, char *argv[], char **output_file, char **mat1_file,
     {
         if (strcmp(argv[1], "-o") == 0)
         {
-            *output_file = (char *) malloc(sizeof(char) * (strlen(argv[2]) + 1));
-            strcpy(*output_file, argv[2]);
-            *mat1_file = (char *) malloc(sizeof(char) * (strlen(argv[3]) + 1));
-            strcpy(*mat1_file, argv[3]);
-            *mat2_file = (char *) malloc(sizeof(char) * (strlen(argv[4]) + 1));
-            strcpy(*mat2_file, argv[4]);
+            order[0] = 2;
+            order[1] = 3;
+            order[2] = 4;
             good_input = 1;
         }
         else if (strcmp(argv[3], "-o") == 0)
         {
-            *output_file = (char *) malloc(sizeof(char) * (strlen(argv[4]) + 1));
-            strcpy(*output_file, argv[4]);
-            *mat1_file = (char *) malloc(sizeof(char) * (strlen(argv[1]) + 1));
-            strcpy(*mat1_file, argv[1]);
-            *mat2_file = (char *) malloc(sizeof(char) * (strlen(argv[2]) + 1));
-            strcpy(*mat2_file, argv[2]);
+            order[0] = 4;
+            order[1] = 1;
+            order[2] = 2;
             good_input = 1;
         }
         else
@@ -97,17 +90,32 @@ int parse_args(int argc, char *argv[], char **output_file, char **mat1_file,
     }
     else if (3 == argc)
     {
-        *output_file = (char *) malloc(sizeof(char) * (strlen(OUT_FILE) + 1));
-        strcpy(*output_file, OUT_FILE);
-        *mat1_file = (char *) malloc(sizeof(char) * (strlen(argv[1]) + 1));
-        strcpy(*mat1_file, argv[1]);
-        *mat2_file = (char *) malloc(sizeof(char) * (strlen(argv[2]) + 1));
-        strcpy(*mat2_file, argv[2]);
+        no_out_file = 1;
+        order[1] = 1;
+        order[2] = 2;
         good_input = 1;
     }
     else
     {
         print_help();
+    }
+
+    if (good_input)
+    {
+        if (no_out_file)
+        {
+            *output_file = (char *) malloc(sizeof(char) * (strlen(OUT_FILE) + 1));
+            strcpy(*output_file, OUT_FILE);
+        }
+        else
+        {
+            *output_file = (char *) malloc(sizeof(char) * (strlen(argv[order[0]]) + 1));
+            strcpy(*output_file, argv[order[0]]);
+        }
+        *mat1_file = (char *) malloc(sizeof(char) * (strlen(argv[order[1]]) + 1));
+        strcpy(*mat1_file, argv[order[1]]);
+        *mat2_file = (char *) malloc(sizeof(char) * (strlen(argv[order[2]]) + 1));
+        strcpy(*mat2_file, argv[order[2]]);
     }
 
     return good_input;

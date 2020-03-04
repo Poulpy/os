@@ -1,4 +1,4 @@
-#include "../include/floats.h"
+#include "floats.h"
 
 /*
  * Initialize a 2D array of floats
@@ -94,8 +94,7 @@ int input_row_cli(float *f, size_t cols)
  */
 void print_floats_cli(float **f, size_t row, size_t col)
 {
-    int i;
-    int j;
+    int i, j;
 
     printf("[");
     for (i = 0; i != row; i++)

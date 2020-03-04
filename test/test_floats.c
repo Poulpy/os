@@ -1,4 +1,4 @@
-#include "../include/floats.h"
+#include "floats.h"
 
 int main()
 {
