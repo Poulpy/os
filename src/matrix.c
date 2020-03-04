@@ -65,9 +65,7 @@ void print_matrix_cli(t_matrix *m)
  */
 t_matrix product(t_matrix *m1, t_matrix *m2)
 {
-    int i;
-    int j;
-    int z;
+    int i, j, z;
     int sum;
     t_matrix m3;
 
@@ -123,14 +121,13 @@ int get_index(char *str, char chr)
  * rows cols
  * coeff1 coeff2
  * coeff3 coeff4
+ * TODO Line endings for Unix and Windows
  */
 t_matrix atomatrix(char *contents)
 {
-    int cols;
+    int cols, rows;
     int current;
-    int i;
-    int j;
-    int rows;
+    int i, j;
     t_matrix m;
 
     /*
@@ -167,11 +164,11 @@ t_matrix atomatrix(char *contents)
 /*
  * Returns a char* representing a matrix
  * see atomatrix
+ * Line endings work for Unix and Windows
  */
 char *matrixtoa(t_matrix *m)
 {
-    int i;
-    int j;
+    int i, j;
     char *buf;
     char coefficient_value[COEFF_SIZE] = "";
 

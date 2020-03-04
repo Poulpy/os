@@ -3,16 +3,10 @@
 
 int main(int argc, char *argv[])
 {
-    char *m1_content;
-    char *m2_content;
-    char *m3_content;
-    char *mat1_file;
-    char *mat2_file;
-    char *output_file;
+    char *m1_content, *m2_content, *m3_content;
+    char *mat1_file, *mat2_file, *output_file;
     int good_input;
-    t_matrix m1;
-    t_matrix m2;
-    t_matrix m3;
+    t_matrix m1, m2, m3;
 
     output_file = NULL;
     mat1_file = NULL;
