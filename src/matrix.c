@@ -127,7 +127,6 @@ int get_index(char *str, char chr)
 t_matrix atomatrix(char *contents)
 {
     char *newline;
-    char *space;
     int cols;
     int current;
     int i;
@@ -136,7 +135,6 @@ t_matrix atomatrix(char *contents)
     t_matrix m;
 
     newline = NULL;
-    space = NULL;
 
     /*
      * Getting the number of rows and the number of cols
@@ -162,14 +160,9 @@ t_matrix atomatrix(char *contents)
     {
         for (j = 0; j != cols; j++)
         {
-            /* slicing by adding a terminating null byte */
-            space = strchr(contents + current, ' ');
-            *space = '\0';
-
             /* scanning the coefficient */
             sscanf(contents + current, "%f", &(m.coeffs[i][j]));
 
-            *space = ' ';
             /* moving to the next word, right after a space */
             current += get_index((contents + current), ' ') + 1;
         }
