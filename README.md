@@ -6,13 +6,6 @@
 - Change char to unsigned char
 - Error handling
 
-### Compile and execute tests
-
-```
-make test
-./a.out
-```
-
 ### Compile and execute main
 
 ```
