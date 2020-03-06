@@ -15,9 +15,22 @@ int main()
     return 0;
 }
 
+void by_2(int *i)
+{
+    *i *= 2;
+}
+
+void by_3(int *i)
+{
+    *i *= 3;
+}
+
 void question1()
 {
     pid_t pid;
+    int i;
+    void (*modify_var_by_2) (int *) = &by_2;
+    void (*modify_var_by_3) (int *) = &by_3;
 
     pid = fork();
 
@@ -27,14 +40,22 @@ void question1()
     }
     else if (pid == 0)/* This is the child's thread */
     {
-        g_var *= 2;
         printf("[fils] PID=%d PPID=%d g_var=%d\n", getpid(), getppid(), g_var);
+        for (i = 0; i != TURNS; i++)
+        {
+            printf("[fils] <%d> %d g_var=%d\n", getpid(), i, g_var);
+            (*modify_var_by_2) (&g_var);
+        }
         printf("*** End of process <%d> ***\n", getpid());
     }
     else /* This is the parent's thread */
     {
-        g_var += 2;
         printf("[pere] PID=%d PPID=%d g_var=%d\n", getpid(), getppid(), g_var);
+        for (i = 0; i != TURNS; i++)
+        {
+            printf("[pere] <%d> %d g_var=%d\n", getpid(), i, g_var);
+            (*modify_var_by_3) (&g_var);
+        }
         printf("*** End of process <%d> ***\n", getpid());
     }
 }
