@@ -13,3 +13,5 @@ make
 ./main test/mat.txt test/mat2.txt
 ```
 
+gcc -Wall -Wextra -ansi -pedantic test/process.c
+gcc -Wall -Wextra -ansi -pedantic test/process.c

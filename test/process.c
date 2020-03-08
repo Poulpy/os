@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<unistd.h>
 #include<sys/types.h>
+#include<sys/wait.h>
 
 #define TURNS 10
 
@@ -27,18 +28,20 @@ void by_3(int *i)
 
 void question1()
 {
-    pid_t pid;
+    pid_t child_pid, wait_pid;
     int i;
     void (*modify_var_by_2) (int *) = &by_2;
     void (*modify_var_by_3) (int *) = &by_3;
+    int status;
 
-    pid = fork();
+    status = 0;
+    child_pid = fork();
 
-    if (pid == -1)
+    if (child_pid == -1)
     {
         perror("Couldn't create thread");
     }
-    else if (pid == 0)/* This is the child's thread */
+    else if (child_pid == 0)/* This is the child's thread */
     {
         printf("[fils] PID=%d PPID=%d g_var=%d\n", getpid(), getppid(), g_var);
         for (i = 0; i != TURNS; i++)
@@ -56,6 +59,8 @@ void question1()
             printf("[pere] <%d> %d g_var=%d\n", getpid(), i, g_var);
             (*modify_var_by_3) (&g_var);
         }
+        /*wait(NULL);*/
+        while ((wait_pid = wait(&status)) > 0);
         printf("*** End of process <%d> ***\n", getpid());
     }
 }
