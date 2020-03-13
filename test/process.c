@@ -8,12 +8,13 @@
 #define TURNS 10
 
 void question1();
+void question2();
 
 int g_var = 1;
 
 int main()
 {
-    question1();
+    question2();
 
     return EXIT_SUCCESS;
 }
@@ -28,6 +29,37 @@ void by_3(int *i)
 {
     printf("%d * 3 = %d\n", *i, *i * 3);
     *i *= 3;
+}
+
+void question2()
+{
+    pid_t child_pid, wait_pid;
+    int status, err;
+    char name[10];
+
+    status = 0;
+    child_pid = fork();
+
+    if (child_pid == -1)
+    {
+        perror("Couldn't create thread");
+    }
+    else if (child_pid == 0)/* This is the child's thread */
+    {
+        printf("Name : ");
+        scanf("%s", name);
+        printf("> %s\n", name);
+        err = execlp("/bin/echo", "echo", "Bonjour", name, (char *) NULL);
+
+        if (-1 == err)
+        {
+            puts("Error : couldn't exec");
+        }
+    }
+    else /* This is the parent's thread */
+    {
+        while ((wait_pid = wait(&status)) > 0);
+    }
 }
 
 void question1()
