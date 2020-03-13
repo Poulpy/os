@@ -14,4 +14,5 @@ make
 ```
 
 gcc -Wall -Wextra -ansi -pedantic test/process.c
-gcc -Wall -Wextra -ansi -pedantic test/process.c
+gcc -Wall -Wextra -ansi -pedantic test/saymyname.c -o saymyname
+

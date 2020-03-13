@@ -10,12 +10,13 @@
 void question1();
 void question2();
 void question3();
+void question6();
 
 int g_var = 1;
 
 int main()
 {
-    question3();
+    question6();
 
     return EXIT_SUCCESS;
 }
@@ -32,6 +33,47 @@ void by_3(int *i)
     *i *= 3;
 }
 
+void question6()
+{
+    pid_t child_pid, wait_pid, parent_pid;
+    int status, err;
+    int i;
+    int child_count;
+
+    printf("Number of children : ");
+    scanf(" %d", &child_count);
+    parent_pid = getpid();
+
+    status = 0;
+
+    for (i = 0; i != child_count + 1; i++)
+    {
+        if (getpid() == parent_pid)/* This is the parent's thread */
+        {
+            child_pid = fork();
+        }
+
+        if (child_pid == -1)
+        {
+            perror("Couldn't create thread");
+        }
+        else if (child_pid == 0)/* This is the child's thread */
+        {
+            err = execl("./saymyname", "./saymyname", "Patarin", (char *) NULL);
+
+            if (-1 == err)
+            {
+                puts("Error : couldn't exec");
+            }
+        }
+    }
+
+    if (getpid() == parent_pid)
+    {
+        while ((wait_pid = wait(&status)) > 0);
+    }
+}
+
 void question3()
 {
     pid_t child_pid, wait_pid;
@@ -46,7 +88,8 @@ void question3()
     }
     else if (child_pid == 0)/* This is the child's thread */
     {
-        err = execl("./saymyname", "./saymyname", "Patarin", (char *) NULL);
+        /*err = execl("./saymyname", "./saymyname", "Patarin", (char *) NULL);*/
+        err = execlp("./saymyname", "./saymyname", "Patarin", (char *) NULL);
 
         if (-1 == err)
         {
