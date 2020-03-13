@@ -15,7 +15,7 @@ int main()
 {
     question1();
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void by_2(int *i)
@@ -70,7 +70,7 @@ void question1()
             printf("[pere] <%d> %d g_var=%d sleep=%d\n", getpid(), i, g_var, time_sleep);
             sleep(time_sleep);
         }
-        printf("[pere] Done\n");
+        printf("[pere] En attente de son fils...\n");
         while ((wait_pid = wait(&status)) > 0);
         printf("*** End of process <%d> ***\n", getpid());
     }
