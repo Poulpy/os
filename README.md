@@ -15,4 +15,5 @@ make
 
 gcc -Wall -Wextra -ansi -pedantic test/process.c
 gcc -Wall -Wextra -ansi -pedantic test/saymyname.c -o saymyname
+gcc -Wall -Wextra -ansi -pedantic -pthread test/thread.c
 
