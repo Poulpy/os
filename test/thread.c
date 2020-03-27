@@ -1,22 +1,26 @@
-#include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void question11();
 void question12();
 void question12_mutex();
+void question13();
 
 #define TURNS 3
+#define BARRIERS 5
 #define P(x) sem_wait(x)
 #define V(x) sem_post(x)
 
 char g_var = 0;
-sem_t s1, s2;
+sem_t s1, s2, barrier_semaphore;
 pthread_mutex_t m1, m2;
 
 int main()
 {
-    question12_mutex();
+    question13();
 
     return 0;
 }
@@ -127,5 +131,57 @@ void question12_mutex()
 
     pthread_mutex_destroy(&m1);
     pthread_mutex_destroy(&m2);
+}
+
+void *barrier_thread()
+{
+    int i;
+
+    printf("[barrier thread] Waiting !");
+
+    for (i = 0; i != BARRIERS; i++)
+    {
+        P(&barrier_semaphore);
+    }
+
+    printf("[barrier thread] I can continue !\n");
+
+    return NULL;
+}
+
+void *worker()
+{
+    int sleep_time;
+
+    srand(pthread_self());
+    sleep_time = rand()%5;
+    printf("[Worker] Sleeping for %d... ZZZzzZzzzzz...\n", sleep_time);
+    sleep(sleep_time);
+    printf("[Worker] Woke up !\n");
+    V(&barrier_semaphore);
+
+    return NULL;
+}
+
+void question13()
+{
+    int i;
+    pthread_t t1, t[BARRIERS];
+
+    sem_init(&barrier_semaphore, 0, 0);
+
+    pthread_create(&t1, NULL, barrier_thread, NULL);
+    for (i = 0; i != BARRIERS; i++)
+    {
+        pthread_create(&(t[i]), NULL, worker, NULL);
+    }
+
+    pthread_join(t1, NULL);
+    for (i = 0; i != BARRIERS; i++)
+    {
+        pthread_join(t[i], NULL);
+    }
+
+    sem_destroy(&barrier_semaphore);
 }
 
