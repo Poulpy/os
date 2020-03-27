@@ -116,8 +116,8 @@ void question12_mutex()
 {
     pthread_t t1, t2;
 
-    pthread_mutex_init(&m1, NULL);
-    pthread_mutex_init(&m2, NULL);
+    pthread_mutex_lock(&m1);
+    pthread_mutex_lock(&m2);
 
     pthread_create(&t1, NULL, print_jemes_mutex, NULL);
     pthread_create(&t2, NULL, print_synchronizethreads_mutex, NULL);
