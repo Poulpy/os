@@ -8,19 +8,24 @@ void question11();
 void question12();
 void question12_mutex();
 void question13();
+void question14();
 
 #define TURNS 3
 #define BARRIERS 5
+#define SIZE 10
 #define P(x) sem_wait(x)
 #define V(x) sem_post(x)
 
 char g_var = 0;
 sem_t s1, s2, barrier_semaphore;
+sem_t sread, swrite;
 pthread_mutex_t m1, m2;
+unsigned int g_wcursor, g_rcursor;
+unsigned char buffer[SIZE];
 
 int main()
 {
-    question13();
+    question14();
 
     return 0;
 }
@@ -184,4 +189,58 @@ void question13()
 
     sem_destroy(&barrier_semaphore);
 }
+
+void *reader()
+{
+    unsigned char read_char;
+
+    P(&sread);
+    printf("Character read %c\n", buffer[g_rcursor]);
+    V(&swrite);
+
+    return NULL;
+}
+
+void *writer(void *vargp)
+{
+    unsigned char to_write;
+
+    /*to_write = *((unsigned char *) vargp);*/
+
+    P(&swrite);
+    buffer[g_wcursor] = *((unsigned char *) vargp);
+    g_wcursor = (g_wcursor + 1)%SIZE;
+    V(&sread);
+
+    return NULL;
+}
+
+void init_buffer()
+{
+    int i;
+
+    for (i = 0; i != SIZE - 1; i++)
+        buffer[i] = ' ';
+}
+
+void question14()
+{
+    pthread_t read_thread, write_thread;
+    unsigned char chr[] = "a";
+
+    init_buffer();
+    sem_init(&sread, 0, 0);
+    sem_init(&swrite, 0, SIZE);
+
+    pthread_create(&read_thread, NULL, reader, NULL);
+    pthread_create(&write_thread, NULL, writer, (void *) chr);
+
+    pthread_join(read_thread, NULL);
+    pthread_join(write_thread, NULL);
+
+    sem_destroy(&sread);
+    sem_destroy(&swrite);
+}
+
+
 
