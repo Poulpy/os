@@ -192,8 +192,6 @@ void question13()
 
 void *reader()
 {
-    unsigned char read_char;
-
     P(&sread);
     printf("Character read %c\n", buffer[g_rcursor]);
     V(&swrite);
@@ -201,14 +199,10 @@ void *reader()
     return NULL;
 }
 
-void *writer(void *vargp)
+void *writer(void *character)
 {
-    unsigned char to_write;
-
-    /*to_write = *((unsigned char *) vargp);*/
-
     P(&swrite);
-    buffer[g_wcursor] = *((unsigned char *) vargp);
+    buffer[g_wcursor] = *((unsigned char *) character);
     g_wcursor = (g_wcursor + 1)%SIZE;
     V(&sread);
 
