@@ -94,6 +94,15 @@ check:
 help:
 	@echo available targets: all dist clean distclean install uninstall check
 
+.PHONY: test
+test:
+	@echo Compiling the tests ...
+	gcc -Wall -Wextra -ansi -pedantic test/process.c -o process
+	gcc -Wall -Wextra -ansi -pedantic test/saymyname.c -o saymyname
+	gcc -Wall -Wextra -ansi -pedantic -pthread test/thread.c -o thread
+	@echo Compiling the tests done !
+
+
 $(BIN): $(OBJS)
 	$(LINK.o) $^
 
