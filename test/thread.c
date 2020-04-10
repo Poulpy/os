@@ -190,7 +190,7 @@ void question13()
     sem_destroy(&barrier_semaphore);
 }
 
-void *reader()
+void *read_thread()
 {
     P(&sread);
     printf("Character read %c\n", buffer[g_rcursor]);
@@ -199,7 +199,7 @@ void *reader()
     return NULL;
 }
 
-void *writer(void *character)
+void *write_thread(void *character)
 {
     P(&swrite);
     buffer[g_wcursor] = *((unsigned char *) character);
@@ -219,18 +219,18 @@ void init_buffer()
 
 void question14()
 {
-    pthread_t read_thread, write_thread;
+    pthread_t id_read_thread, id_write_thread;
     unsigned char chr[] = "a";
 
     init_buffer();
     sem_init(&sread, 0, 0);
     sem_init(&swrite, 0, SIZE);
 
-    pthread_create(&read_thread, NULL, reader, NULL);
-    pthread_create(&write_thread, NULL, writer, (void *) chr);
+    pthread_create(&id_read_thread, NULL, read_thread, NULL);
+    pthread_create(&id_write_thread, NULL, write_thread, (void *) chr);
 
-    pthread_join(read_thread, NULL);
-    pthread_join(write_thread, NULL);
+    pthread_join(id_read_thread, NULL);
+    pthread_join(id_write_thread, NULL);
 
     sem_destroy(&sread);
     sem_destroy(&swrite);
