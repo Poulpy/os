@@ -194,6 +194,7 @@ void *read_thread()
 {
     P(&sread);
     printf("Character read %c\n", buffer[g_rcursor]);
+    g_rcursor = (g_rcursor + 1)%SIZE;
     V(&swrite);
 
     return NULL;
