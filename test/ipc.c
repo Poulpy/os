@@ -78,13 +78,18 @@ char *read_file(char *filename)
 
 void write_file(char *filename, char *to_write)
 {
-    //fd_file_to_read = open(filename, O_CREAT | O_RDONLY);
+    int fd_file_to_write;
+
+    fd_file_to_write = open(filename, O_CREAT | O_WRONLY | O_APPEND);
+    write(fd_file_to_write, to_write, sizeof(char) * strlen(to_write));
+    close(fd_file_to_write);
 }
 
 void question43()
 {
     char *help_txt = read_file("help.txt");
     printf("%s", help_txt);
+    write_file("bidule.txt", help_txt);
     free(help_txt);
 }
 
