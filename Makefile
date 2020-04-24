@@ -100,6 +100,7 @@ test:
 	gcc -Wall -Wextra -ansi -pedantic test/process.c -o process
 	gcc -Wall -Wextra -ansi -pedantic test/saymyname.c -o saymyname
 	gcc -Wall -Wextra -ansi -pedantic -pthread test/thread.c -o thread
+	gcc -Wall -Wextra -pedantic test/ipc.c -o ipc
 	@echo Compiling the tests done !
 
 
