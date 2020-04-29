@@ -265,95 +265,12 @@ void mystery_number()
 
 
 
-/*
-void send_pid_message()
-{
-    pid_t pid;
-    int producer_tube;
-
-    pid = getpid();
-    printf("[prod] pid %d\n", pid);
-
-    producer_tube = open("producer", O_CREAT | O_TRUNC | O_RDWR);
-    write(producer_tube, (void *) &pid, sizeof(pid_t));
-    close(producer_tube);
-}
-
-pid_t get_pid_message()
-{
-    pid_t pid;
-    int producer_tube;
-
-    producer_tube = open("producer", O_RDWR);
-    while (read(producer_tube, (void *) &pid, sizeof(pid_t)) == 0);
-    close(producer_tube);
-
-    return pid;
-}
-
-void send_message(char *message)
-{
-    size_t message_size;
-    int producer_tube;
-    int response;
-
-    message_size = strlen(message);
-    producer_tube = open("producer", O_CREAT | O_RDWR);
-
-    printf("[cons] Message size %d\n", message_size);
-    write(producer_tube, &message_size, sizeof(size_t));
-
-    do
-    {
-        read(producer_tube, &response, sizeof(int));
-    } while (response != RECEIVED);
-    //printf("producer received\n");
-
-    write(producer_tube, message, sizeof(char) * strlen(message));
-    close(producer_tube);
-}
-
-char *get_message()
-{
-    char *message_received;
-    size_t message_size;
-    int producer_tube;
-    int response;
-
-    message_size = 0;
-    message_received = NULL;
-    response = RECEIVED;
-
-    producer_tube = open("producer", O_RDWR);
-    while (read(producer_tube, &message_size, sizeof(size_t)) == 0);
-    //read(producer_tube, &message_size, sizeof(size_t));
-    printf("[prod] Message size %d received\n", message_size);
-
-    //write(producer_tube, &response, sizeof(int));
-    //printf("producer received : send RECEIVE msg\n");
-
-    message_received = (char *) calloc(message_size + 1, sizeof(char));
-
-    read(producer_tube, message_received, sizeof(char) * (message_size + 1));
-    printf("[prod] Message received : %s\n", message_received);
-    close(producer_tube);
-
-    return message_received;
-}
-
-*/
-
-
-
-
-
 
 void send_pid_message(int pipe)
 {
     pid_t pid;
 
     pid = getpid();
-    printf("[prod] pid %d\n", pid);
 
     write(pipe, (void *) &pid, sizeof(pid_t));
 }
@@ -362,8 +279,7 @@ pid_t get_pid_message(int pipe)
 {
     pid_t pid;
 
-    while (read(pipe, (void *) &pid, sizeof(pid_t)) == 0);
-    printf("[cons] The pid is %d\n", pid);
+    read(pipe, (void *) &pid, sizeof(pid_t));
 
     return pid;
 }
@@ -371,13 +287,10 @@ pid_t get_pid_message(int pipe)
 void send_message(int pipe, char *message)
 {
     size_t message_size;
-    int response;
 
     message_size = strlen(message);
 
-    printf("[prod] Message size %d\n", message_size);
     write(pipe, &message_size, sizeof(size_t));
-
 
     write(pipe, message, sizeof(char) * strlen(message));
 }
@@ -390,44 +303,35 @@ char *get_message(int pipe)
     message_size = 0;
     message_received = NULL;
 
-    //while (read(pipe, &message_size, sizeof(size_t)) == 0);
     read(pipe, &message_size, sizeof(size_t));
-    printf("[cons] Message size %d received\n", message_size);
 
     message_received = (char *) calloc(message_size + 1, sizeof(char));
 
     read(pipe, message_received, sizeof(char) * (message_size + 1));
-    printf("[cons] Message received : %s\n", message_received);
 
     return message_received;
 }
 
 
-void producer()
+void producer(int producer_tube)
 {
-    int producer_tube;
-
-    producer_tube = open("producer", O_CREAT | O_TRUNC | O_RDWR);
-
     send_pid_message(producer_tube);
     send_message(producer_tube, "OwO");
-
-    close(producer_tube);
 }
 
-void consumer()
+void consumer(int producer_tube)
 {
     pid_t producer_pid;
     char *message;
-    int producer_tube;
 
-    producer_tube = open("producer", O_CREAT | O_RDONLY);
     producer_pid = get_pid_message(producer_tube);
+
+    printf("[Consumer] The pid of the consumer is %d\n", producer_pid);
 
     message = get_message(producer_tube);
 
+    printf("[Consumer] The producer sent : %s\n", message);
 
-    close(producer_tube);
     free(message);
 }
 
@@ -435,7 +339,16 @@ void producer_consumer()
 {
     pid_t pid, wait_pid;
     int status;
+    int producer_tube;
 
+
+    if (mkfifo("producer", 0666) == -1)
+    {
+        perror("mkfifo is not working");
+        exit(1);
+    }
+
+    producer_tube = open("producer", O_RDWR);
 
     pid = fork();
 
@@ -445,13 +358,15 @@ void producer_consumer()
     }
     else if (pid == 0)
     {
-        consumer();
+        consumer(producer_tube);
     }
     else
     {
-        producer();
+        producer(producer_tube);
         while ((wait_pid = wait(&status)) > 0);
     }
+
+    close(producer_tube);
 }
 
 int main(int argc, char *argv[])
