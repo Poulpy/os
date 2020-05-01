@@ -114,8 +114,11 @@ void copy_file(char *filename_tocopy, char *filename_topaste)
 void question43()
 {
     char *help_txt = read_file("help.txt");
+
     printf("%s", help_txt);
+
     write_file("bidule.txt", help_txt);
+
     free(help_txt);
 }
 
@@ -144,14 +147,18 @@ void close_tubes()
 int get_father_response()
 {
     int i = 0;
+
     read(status_tube[0], &i, sizeof(int));
+
     return i;
 }
 
 int get_child_response()
 {
     int i = 0;
+
     read(response_tube[0], &i, sizeof(int));
+
     return i;
 }
 
@@ -369,9 +376,43 @@ void producer_consumer()
     close(producer_tube);
 }
 
+void simulate_shell_pipe(char *cmd1, char *cmd2)
+{
+    pid_t pid;
+    int fd[2] = { -1, -1 };
+
+    pipe(fd);
+    pid = fork();
+
+    if (pid == -1)
+    {
+        perror("Damn... Fork failed");
+    }
+    else if (pid == 0)
+    {
+        close(fd[1]);
+
+        dup2(fd[0], STDIN_FILENO);
+        system(cmd2);
+
+        exit(EXIT_SUCCESS);
+    }
+    else
+    {
+        close(fd[0]);
+
+        dup2(fd[1], STDOUT_FILENO);
+        system(cmd1);
+
+        close(STDOUT_FILENO);
+
+        wait(NULL);
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    producer_consumer();
+    simulate_shell_pipe(argv[1], argv[2]);
 
     return 0;
 }
