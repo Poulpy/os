@@ -14,6 +14,9 @@
 #define GREATER 4
 #define RECEIVED 6
 
+int status_tube[2] = { -1, -1 };
+int response_tube[2] = { -1, -1 };
+
 /*
  * Exercise 1
  *
@@ -92,6 +95,9 @@ char *read_file(char *filename)
     return file_content;
 }
 
+/**
+ * Write a char* in a file
+ */
 void write_file(char *filename, char *to_write)
 {
     int fd_file_to_write;
@@ -101,6 +107,9 @@ void write_file(char *filename, char *to_write)
     close(fd_file_to_write);
 }
 
+/**
+ * Copy the contents of a file and paste it to another file
+ */
 void copy_file(char *filename_tocopy, char *filename_topaste)
 {
     char *content;
@@ -122,9 +131,6 @@ void question43()
     free(help_txt);
 }
 
-int status_tube[2] = { -1, -1 };
-int response_tube[2] = { -1, -1 };
-
 
 void send_to_father(int i)
 {
@@ -144,6 +150,10 @@ void close_tubes()
     close(status_tube[1]);
 }
 
+/**
+ * Get the response of the father
+ * TODO remove global
+ */
 int get_father_response()
 {
     int i = 0;
@@ -153,6 +163,10 @@ int get_father_response()
     return i;
 }
 
+/**
+ * Get the response of the child
+ * TODO remove global
+ */
 int get_child_response()
 {
     int i = 0;
@@ -162,6 +176,11 @@ int get_child_response()
     return i;
 }
 
+/**
+ * Sends random numbers to the father
+ * For each response the child recalculates the boundaries
+ * where the mystery number is
+ */
 void child()
 {
     int guess, father_response;;
@@ -202,6 +221,11 @@ void child()
 
 }
 
+/**
+ * Picks a random number and wait for the child's
+ * responses. The father then sends a message to the child
+ * if the number is greater, lower or equal to the mystery number
+ */
 void father()
 {
     int to_guess, child_response;
@@ -245,6 +269,10 @@ void open_tubes()
     }
 }
 
+/**
+ * Game of the mystery number: the father takes a random number
+ * and the child must guess
+ */
 void mystery_number()
 {
     pid_t pid;
@@ -273,6 +301,9 @@ void mystery_number()
 
 
 
+/**
+ * Sends the pid of the process through a pipe
+ */
 void send_pid_message(int pipe)
 {
     pid_t pid;
@@ -282,6 +313,9 @@ void send_pid_message(int pipe)
     write(pipe, (void *) &pid, sizeof(pid_t));
 }
 
+/**
+ * Receives a PID through a pipe
+ */
 pid_t get_pid_message(int pipe)
 {
     pid_t pid;
@@ -291,6 +325,9 @@ pid_t get_pid_message(int pipe)
     return pid;
 }
 
+/**
+ * Function for sending a message through a pipe
+ */
 void send_message(int pipe, char *message)
 {
     size_t message_size;
@@ -302,6 +339,9 @@ void send_message(int pipe, char *message)
     write(pipe, message, sizeof(char) * strlen(message));
 }
 
+/**
+ * Function for reading a message (must be freed afterwards)
+ */
 char *get_message(int pipe)
 {
     char *message_received;
@@ -319,13 +359,18 @@ char *get_message(int pipe)
     return message_received;
 }
 
-
+/**
+ * Sends the PID of the process then a message
+ */
 void producer(int producer_tube)
 {
     send_pid_message(producer_tube);
     send_message(producer_tube, "OwO");
 }
 
+/**
+ * Receives the PID of the consumer then a message
+ */
 void consumer(int producer_tube)
 {
     pid_t producer_pid;
@@ -342,6 +387,12 @@ void consumer(int producer_tube)
     free(message);
 }
 
+/**
+ * An example of producer and a consumer
+ * Both are in separate processes
+ * The producer sends data and the consumer reads them
+ * The communicaton is made with fifo, named pipes
+ */
 void producer_consumer()
 {
     pid_t pid, wait_pid;
@@ -376,9 +427,14 @@ void producer_consumer()
     close(producer_tube);
 }
 
+/**
+ * Simulate a shell pipe with 2 commands
+ * cmd1 | cmd2
+ */
 void simulate_shell_pipe(char *cmd1, char *cmd2)
 {
-    pid_t pid;
+    pid_t pid, wait_pid;
+    int status;
     int fd[2] = { -1, -1 };
 
     pipe(fd);
@@ -395,6 +451,7 @@ void simulate_shell_pipe(char *cmd1, char *cmd2)
         dup2(fd[0], STDIN_FILENO);
         system(cmd2);
 
+        close(fd[0]);
         exit(EXIT_SUCCESS);
     }
     else
@@ -404,9 +461,10 @@ void simulate_shell_pipe(char *cmd1, char *cmd2)
         dup2(fd[1], STDOUT_FILENO);
         system(cmd1);
 
+        close(fd[1]);
         close(STDOUT_FILENO);
 
-        wait(NULL);
+        while ((wait_pid = wait(&status)) > 0);
     }
 }
 
