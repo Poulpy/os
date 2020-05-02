@@ -430,6 +430,7 @@ void producer_consumer()
 /**
  * Simulate a shell pipe with 2 commands
  * cmd1 | cmd2
+ * Works with arguments : ls "grep a"
  */
 void simulate_shell_pipe(char *cmd1, char *cmd2)
 {
@@ -468,9 +469,57 @@ void simulate_shell_pipe(char *cmd1, char *cmd2)
     }
 }
 
+/**
+ * Doesn't work with arguments
+ * Good : ls wc
+ * Bad : ls "grep a"
+ */
+void simulate_shell_pipe_v2(char *cmd1, char *cmd2)
+{
+    pid_t pid;
+    int fd[2] = { -1, -1 };
+    char *argv1[] = { cmd1, NULL };
+    char *argv2[] = { cmd2, NULL };
+
+    pipe(fd);
+    pid = fork();
+
+    if (pid == -1)
+    {
+        perror("Damn... Fork failed");
+    }
+    else if (pid == 0)
+    {
+        close(fd[1]);
+
+        dup2(fd[0], STDIN_FILENO);
+        if (execvp(cmd2, argv2) == -1)
+        {
+            perror("Command 2 did not work");
+        }
+
+        close(fd[0]);
+
+        exit(EXIT_SUCCESS);
+    }
+    else
+    {
+        close(fd[0]);
+
+        dup2(fd[1], STDOUT_FILENO);
+        if (execvp(cmd1, argv1) == -1)
+        {
+            perror("Command 1 did not work");
+        }
+
+        close(fd[1]);
+        wait(NULL);
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    simulate_shell_pipe(argv[1], argv[2]);
+    simulate_shell_pipe_v2(argv[1], argv[2]);
 
     return 0;
 }
