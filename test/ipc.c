@@ -517,10 +517,85 @@ void simulate_shell_pipe_v2(char *cmd1, char *cmd2)
     }
 }
 
+int simulate_shell_pipes(int i, char *argv[], int len, int prev_fd[])
+{
+    pid_t pid = 1;
+    int fd[2] = { -1, -1 };
+
+    printf("i %d argv[i] %s len %d\n", i, argv[i], len);
+    if (i != len - 1)
+    {
+        if (pipe(fd) == -1)
+            perror("pipe is not working");
+        pid = fork();
+    }
+
+    if (pid == -1)
+    {
+        perror("Damn... Fork failed");
+    }
+    else if (pid == 0)
+    {
+        printf("Im' the child\n");
+        sleep(1);
+        if (i != len - 1)
+            return simulate_shell_pipes(i + 1, argv, len, fd);
+    }
+    else
+    {
+        printf("Im' the father\n");
+        if (i != 0)
+        {
+            close(prev_fd[1]);
+
+            dup2(prev_fd[0], STDIN_FILENO);
+            //system(cmd2);
+        }
+        if (i != len - 1)
+        {
+            close(fd[0]);
+            dup2(fd[1], STDOUT_FILENO);
+        }
+
+        printf("system(%s);\n", argv[i]);
+        system(argv[i]);
+        close(STDOUT_FILENO);
+        close(STDIN_FILENO);
+
+        if (i != len - 1)
+            wait(NULL);
+        exit(EXIT_SUCCESS);
+        /*
+        if (i != len - 1)
+        {
+            close(fd[1]);
+            close(STDOUT_FILENO);
+
+            wait(NULL);
+            exit(EXIT_SUCCESS);
+        }
+        if (i != 0)
+        {
+            close(prev_fd[0]);
+            //exit(EXIT_SUCCESS);
+        }
+        */
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int main(int argc, char *argv[])
 {
-    simulate_shell_pipe_v2(argv[1], argv[2]);
+    char *commands[argc - 1];
+    int fd[] = { -1, -1 };
+    int i;
 
-    return 0;
+    for (i = 0; i != argc - 1; i++)
+        commands[i] = argv[i + 1];
+
+    simulate_shell_pipes(0, commands, argc - 1, fd);
+
+    return EXIT_SUCCESS;
 }
 
